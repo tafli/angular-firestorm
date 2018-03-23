@@ -6,6 +6,11 @@ import {FormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {AngularFireModule} from 'angularfire2';
 import {AngularFirestoreModule} from 'angularfire2/firestore';
+import {CoreModule} from './core/core.module';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AuthGuard} from './core/auth.guard';
 
 
 var firebaseConfig = {
@@ -19,15 +24,19 @@ var firebaseConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    UserProfileComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    AppRoutingModule,
+    CoreModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {
