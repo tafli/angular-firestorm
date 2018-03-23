@@ -12,7 +12,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import {AppRoutingModule} from './app-routing.module';
 import {AuthGuard} from './core/auth.guard';
 
-
 var firebaseConfig = {
   apiKey: 'AIzaSyDO6QQiypQJdaI2jFy1pMYgqFNl7AYU8nA',
   authDomain: 'angular-firebase-f577b.firebaseapp.com',

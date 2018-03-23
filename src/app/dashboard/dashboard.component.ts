@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import {Router} from '@angular/router';
 
 interface Post {
   title: string;
@@ -19,22 +20,18 @@ interface PostId extends Post {
 })
 export class DashboardComponent implements OnInit {
 
-  postsCollection: AngularFirestoreCollection<Post>;
   posts: any;
 
   title: string;
   content: string;
 
-  postDoc: AngularFirestoreDocument<Post>;
   post: Observable<Post>;
 
-  constructor(private afs: AngularFirestore) {
-
+  constructor(private afs: AngularFirestore, public router: Router) {
   }
 
   ngOnInit() {
-    this.postsCollection = this.afs.collection('posts');
-    this.posts = this.postsCollection.snapshotChanges()
+    this.posts = this.afs.collection('posts').snapshotChanges()
       .map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data() as Post;
@@ -46,17 +43,18 @@ export class DashboardComponent implements OnInit {
   }
 
   addPost() {
-    this.afs.collection('posts').add({'title': this.title, 'content': this.content});
-    // this.afs.collection('posts').doc('my-custom-id').set({'title': this.title, 'content': this.content});
+    if (this.title.length > 0 && this.content.length > 0) {
+      this.afs.collection('posts').add({'title': this.title, 'content': this.content});
+      this.title = null;
+      this.content = null;
+    }
   }
 
   getPost(postId) {
-    this.postDoc = this.afs.doc('posts/' + postId);
-    this.post = this.postDoc.valueChanges();
+    this.post = this.afs.doc(`posts/${postId}`).valueChanges();
   }
 
   deletePost(postId) {
-    this.afs.doc('posts/' + postId).delete();
+    this.afs.doc(`posts/${postId}`).delete();
   }
-
 }
