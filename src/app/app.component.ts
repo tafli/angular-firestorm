@@ -33,7 +33,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.postsCollection = this.afs.collection('posts', ref => ref.where('title', '==', 'tafli'));
+    this.postsCollection = this.afs.collection('posts');
     this.posts = this.postsCollection.snapshotChanges()
       .map(actions => {
         return actions.map(a => {
